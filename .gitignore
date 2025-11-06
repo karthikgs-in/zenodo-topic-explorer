@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv*/
+venv*/
+
+# IDE
+.vscode/
+.idea/
+
+# Local/temporary
+.DS_Store
+*.log
+
+# Kaggle / notebooks
+*.ipynb_checkpoints/
+
+# Large model dirs (just in case)
+*.bin
+*.pt
+*.h5
+.cache/

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{{ app_title }}</title>
+<style>
+:root { --bg:#0b0f12; --card:#12181d; --text:#e5e7eb; --muted:#94a3b8; --accent:#7dd3fc; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial; background: var(--bg); color: var(--text);}
+header { padding: 16px 24px; border-bottom: 1px solid #1f2937; display:flex; gap:12px; align-items:center; justify-content:space-between; }
+header h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: .2px;}
+.muted { color: var(--muted); font-size: 14px; }
+main { padding: 16px 24px; max-width: 1200px; margin: 0 auto;}
+.card { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 16px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 10px 12px; border-bottom: 1px solid #1f2937; vertical-align: top; }
+th { text-align: left; color: var(--muted); font-weight: 600; }
+select, .btn { padding: 8px 12px; border-radius: 10px; border: 1px solid #334155; background: transparent; color: var(--text); }
+a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+footer { color: var(--muted); font-size: 12px; padding: 24px; text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 style="display:inline-block; margin-right:10px;">{{ app_title }}</h1>
+    <span class="muted">{{ topic }}</span>
+  </div>
+  <div>
+    {% if variants and selected %}
+      <label class="muted" for="model">Topics:</label>
+      <select id="model" onchange="location.href='/set-model?model='+encodeURIComponent(this.value)">
+        {% for v in variants %}
+          <option value="{{ v }}" {% if v==selected %}selected{% endif %}>{{ v }}</option>
+        {% endfor %}
+      </select>
+      <a class="btn" style="margin-left:8px" href="/?model={{ selected | urlencode }}">← Back</a>
+      <a class="btn" style="margin-left:8px" href="/download/variant.csv">Download Variant CSV</a>
+      <a class="btn" style="margin-left:8px" href="/download/topic.csv?topic={{ topic | urlencode }}&model={{ selected | urlencode }}">Download Topic CSV</a>
+    {% endif %}
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:45%;">Dataset Title</th>
+          <th>DOI</th>
+          <th>Downloads</th>
+          <th>Views</th>
+          <th>Unique Downloads</th>
+          <th>License</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          <td>{{ row['metadata.title'] }}</td>
+          <td><a href="{{ row['links.doi'] }}" target="_blank" rel="noopener">{{ row['links.doi'] }}</a></td>
+          <td>{{ row['stats.downloads'] }}</td>
+          <td>{{ row['stats.views'] }}</td>
+          <td>{{ row['stats.unique_downloads'] }}</td>
+          <td>{{ row['metadata.license.id'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<footer>Built with Flask + Plotly. Variant: {{ selected }}</footer>
+</body>
+</html>

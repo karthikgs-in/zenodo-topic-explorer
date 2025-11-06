@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{{ app_title }}</title>
+<style>
+:root { --bg:#0b0f12; --card:#12181d; --text:#e5e7eb; --muted:#94a3b8; --accent:#7dd3fc; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial; background: var(--bg); color: var(--text);}
+header { padding: 16px 24px; border-bottom: 1px solid #1f2937; display:flex; gap:12px; align-items:center; justify-content:space-between; }
+header h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: .2px;}
+.muted { color: var(--muted); font-size: 14px; }
+main { padding: 16px 24px; max-width: 1200px; margin: 0 auto;}
+.card { background: var(--card); border: 1px solid #1f2937; border-radius: 14px; padding: 16px; }
+select, .btn { padding: 8px 12px; border-radius: 10px; border: 1px solid #334155; background: transparent; color: var(--text); }
+a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+.grid { display:grid; grid-template-columns: 1fr; gap:16px; } @media (min-width: 900px) { .grid { grid-template-columns: 3fr 1fr; } }
+.pill { padding: 6px 10px; border: 1px solid #334155; border-radius: 999px; color: var(--muted); font-size: 12px; }
+footer { color: var(--muted); font-size: 12px; padding: 24px; text-align:center;}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 style="display:inline-block; margin-right:10px;">{{ app_title }}</h1>
+    <span class="muted">Top 500 Most Downloaded Zenodo Datasets</span>
+  </div>
+  <div>
+    {% if variants and selected %}
+      <label class="muted" for="model">Topics:</label>
+      <select id="model" onchange="location.href='/set-model?model='+encodeURIComponent(this.value)">
+        {% for v in variants %}
+          <option value="{{ v }}" {% if v==selected %}selected{% endif %}>{{ v }}</option>
+        {% endfor %}
+      </select>
+      <a class="btn" style="margin-left:8px" href="/download/variant.csv">Download CSV</a>
+    {% endif %}
+  </div>
+</header>
+
+<main>
+  {% if message %}
+    <div class="card">{{ message }}</div>
+  {% else %}
+  <div class="grid">
+    <div class="card">
+      <div class="pill" style="margin-bottom:10px;">
+        {{ topic_count }} topics • {{ row_count }} datasets • {{ total_downloads }} total downloads • model: {{ selected }}
+      </div>
+      <!-- Wrapped treemap so we can attach JS handler -->
+      <div id="treemap">
+        {{ treemap | safe }}
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin:6px 0 12px 0;">Topics</h3>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        {% for r in sidebar %}
+          <a href="/topic/{{ r['topic'] | urlencode }}?model={{ selected | urlencode }}">
+            {{ r['topic'] }} — {{ r['downloads_fmt'] }} downloads
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</main>
+
+<footer>Built with Flask + Plotly. Precomputed variants toggle above.</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var plot = document.querySelector('#treemap .js-plotly-plot');
+  if (!plot) return;
+
+  plot.on('plotly_click', function (e) {
+    try {
+      var pt = e.points && e.points[0];
+      var label = pt && pt.label;
+      if (!label || label === "All Topics") return;
+      var model = "{{ selected | e }}";
+      var url = "/topic/" + encodeURIComponent(label);
+      if (model) url += "?model=" + encodeURIComponent(model);
+      window.location = url;
+    } catch (err) {
+      console.warn(err);
+    }
+  });
+});
+</script>
+</body>
+</html>

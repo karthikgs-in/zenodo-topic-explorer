@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "tfidf_kmeans": "tfidf_kmeans.csv",
+    "sbert_kmeans": "sbert_kmeans.csv",
+    "keywords": "keywords.csv"
+  }
+}
