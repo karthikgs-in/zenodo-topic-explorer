@@ -116,3 +116,9 @@ Switch between them via the dropdown on the homepage or `?model=variant_name`.
 —
 
 Happy exploring 👀
+## 🧑‍💻 Author
+
+**Karthik G. Shanmugasundaram**  
+M.Tech (AI & DS), SRM Institute of Science and Technology  
+[GitHub](https://github.com/karthikgs-in) • [LinkedIn](https://linkedin.com/in/karthikgs-in)
+
