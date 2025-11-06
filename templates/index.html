@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>{{ app_title }} by <a href=https://www.linkedin.com/in/karthikgs/>KarthikGS</title></a></title>
+<title>{{ app_title }}</title>
 <style>
 :root { --bg:#0b0f12; --card:#12181d; --text:#e5e7eb; --muted:#94a3b8; --accent:#7dd3fc; }
 * { box-sizing: border-box; }
@@ -36,6 +36,15 @@ footer { color: var(--muted); font-size: 12px; padding: 24px; text-align:center;
       <a class="btn" style="margin-left:8px" href="/download/variant.csv">Download CSV</a>
     {% endif %}
   </div>
+      <!-- author credit -->
+    <div style="font-size:13px;color:var(--muted);margin-top:4px;text-align:right;">
+      Built by
+      <a href="https://www.linkedin.com/in/karthikgs/"
+         target="_blank" rel="noopener"
+         style="color:var(--accent);text-decoration:none;">
+         Karthik GS
+      </a>
+    </div>
 </header>
 
 <main>
@@ -63,6 +72,7 @@ footer { color: var(--muted); font-size: 12px; padding: 24px; text-align:center;
         {% endfor %}
       </div>
     </div>
+    
   </div>
   {% endif %}
 </main>
