@@ -3,6 +3,7 @@
 **What is it?**
 This is a lightweight Flask web app that lets you explore the top 500 most-downloaded datasets on [Zenodo.org](https://zenodo.org) through an interactive treemap and drill-down views. Zenodo is a data repository "built and developed by researchers, to ensure that everyone can join in Open Science."
 
+[![Deployed on Render](https://render.com/images/deploy-to-render-button.svg)](https://zenodo-topic-explorer.onrender.com)
 
 You can toggle between different topic-modeling variants (e.g., keyword mapping, TF-IDF + KMeans, SBERT + KMeans) and see which topics dominate by downloads, views, and dataset counts.
 
